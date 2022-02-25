@@ -1,5 +1,7 @@
 #include"huffman.h"
 #include"stack.h"
+#include"queue.h"
+#include<cmath>
 
 #define stack_size 40
 
@@ -15,7 +17,31 @@ void HTree::preordertraversal(TNode cur) {
 	free(cur);
 }
 
-TNode HTree::createTree(vector<pair<int, char>> material) {
+void HTree::levelordertraversal() {
+	queue<TNode> level;
+	TNode temp = (TNode)malloc(sizeof(struct treeNode));
+	level.Push(head);
+	int location = 0, col = 0, loss = 0;
+	while (level.IsEmpty() != true) {
+		temp = level.Pop();
+		location++;
+		if (temp->letter != NULL) {
+			cout << temp->letter;
+			loss++;
+		}
+		else {
+			cout << "\t";
+			level.Push(temp->left);
+			level.Push(temp->right);
+		}
+		/*用来检测输出到第几行*/
+		if (location == (pow(2, col) - loss * 2)) {
+			cout << endl;
+		}
+	}
+}
+
+void HTree::createTree(vector<pair<int, char>> material) {
 	pair<int, char> temp_ic;
 	stack<TNode> paper;
 	stack<TNode> temp_paper;
@@ -93,5 +119,5 @@ TNode HTree::createTree(vector<pair<int, char>> material) {
 			free(parent[j]);
 	}
 	/*将树的根赋值给头节点*/
-	return paper.Pop();
+	head = paper.Pop();
 }

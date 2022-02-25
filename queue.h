@@ -4,21 +4,21 @@
 #define MaxSize 40
 
 template<typename R>
-struct SNode {
+struct QNode {
 	R data;
-	struct SNode* next;
+	struct QNode* next;
 };
 
 template<typename R>
 class queue {
 private:
-	SNode<R>* front;	//永远指向队列头节点
-	SNode<R>* rear;		//永远指向队列尾节点
+	QNode<R>* front;	//永远指向队列头节点
+	QNode<R>* rear;		//永远指向队列尾节点
 public:
 	//ADT方法
 		/*构造和析构函数*/
 	queue() : rear(NULL), front(NULL) {}
-	~queue() { free(front); }
+	~queue() { }
 
 	/*建栈*/
 	void CreateQueue(int size);
@@ -37,7 +37,8 @@ public:
 template<typename R>
 void queue<R>::CreateQueue(int size)
 {
-	front = new struct SNode<R>;
+	front = new struct QNode<R>;
+	rear = new struct QNode<R>;
 	/*头尾在同一节点*/
 	rear = front;
 }
@@ -50,11 +51,12 @@ bool queue<R>::IsEmpty() {
 template<typename R>
 void queue<R>::Push(R item) {
 	if (IsEmpty() == true) {
+		front = new struct QNode<R>;
 		front->data = item;
 		rear = front->next;
 	}
 	else {
-		rear = new struct SNode<R>;
+		rear = new struct QNode<R>;
 		rear->data = item;
 		rear = rear->next;
 	}
@@ -63,13 +65,11 @@ void queue<R>::Push(R item) {
 
 template<typename R>
 R queue<R>::Pop() {
-	T item = {};
-	if (IsEmpty() == true)
-		return item;
-	SNode<T>* cur = front;
-	for (int i = 0; i < top; i++, cur = cur->next);
-	item = cur->data;
-	top--;
+	R item = front->data;
+	struct QNode<R>* cur;
+	cur = front;
+	front = front->next;
+	free(cur);
 	return item;
 }
 

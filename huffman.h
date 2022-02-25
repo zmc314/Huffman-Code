@@ -18,13 +18,14 @@ typedef struct treeNode {
 /*建哈夫曼树类*/
 class HTree {
 public:
+	TNode head;
 	/*构造和析构函数*/
-	HTree() {}
+	HTree() : head(NULL) {}
 	~HTree() { }
 	
 	/*建树*/
 	//TODO:加入参数，直接从文件中读取。
-	TNode createTree(vector<pair<int, char>> material);
+	void createTree(vector<pair<int, char>> material);
 
 	/*前序遍历*/
 	void preordertraversal(TNode cur);
